@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>图片字幕生成器 - 预览</title>
+  <link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='12' fill='%232563eb'/><rect x='14' y='16' width='36' height='10' rx='5' fill='%231e40af'/><circle cx='32' cy='36' r='14' fill='%23ffffff'/><circle cx='32' cy='36' r='7' fill='%232563eb'/><rect x='22' y='22' width='20' height='4' rx='2' fill='%2393c5fd'/></svg>">
+  <style>
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Microsoft YaHei',sans-serif;background:#f6f7fb;margin:0}
+    .wrap{max-width:900px;margin:40px auto;padding:0 20px}
+    .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.06);overflow:hidden}
+    .header{padding:18px 20px;border-bottom:1px solid #eee;font-weight:600}
+    .title{display:flex;align-items:center;gap:10px}
+    .title svg{width:28px;height:28px}
+    .body{padding:20px}
+    .row{margin-bottom:14px}
+    .input{width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px}
+    .btn{background:#2563eb;color:#fff;border:none;border-radius:8px;padding:10px 16px;font-weight:600;cursor:pointer}
+    .btn:hover{background:#1e40af}
+    .chk{margin-right:8px}
+    .drop{border:2px dashed #9ca3af;border-radius:12px;padding:24px;text-align:center;color:#6b7280;background:#fafafa}
+    .drop.drag{background:#eef2ff;border-color:#6366f1;color:#4338ca}
+    #preview{max-width:100%;height:auto;margin-top:12px;border-radius:8px;border:1px solid #e5e7eb}
+    .note{color:#6b7280;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="header">
+        <div class="title">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="12" fill="#2563eb"/><rect x="14" y="16" width="36" height="10" rx="5" fill="#1e40af"/><circle cx="32" cy="36" r="14" fill="#ffffff"/><circle cx="32" cy="36" r="7" fill="#2563eb"/><rect x="22" y="22" width="20" height="4" rx="2" fill="#93c5fd"/></svg>
+          图片字幕生成器（预览）
+        </div>
+      </div>
+      <div class="body">
+        <div class="row"><label>图片URL</label><input id="url" class="input" type="url" placeholder="https://..."></div>
+        <div class="row">
+          <div id="drop" class="drop">拖拽图片到此处或点击下方选择文件</div>
+          <input id="file" class="input" type="file" accept="image/*">
+          <img id="preview" style="display:none">
+          <div class="note">预览页面不连接后台，仅演示交互与样式</div>
+        </div>
+        <div class="row"><label>字幕内容</label><textarea class="input" rows="3" placeholder="在此输入或修改生成的字幕内容"></textarea></div>
+        <div class="row"><label><input class="chk" type="checkbox">输出中文字幕</label></div>
+        <div class="row"><label><input class="chk" type="checkbox">叠加字幕到图片</label></div>
+        <div class="row"><label><input class="chk" type="checkbox">为下载图片添加专属水印</label></div>
+        <div class="row"><input class="input" type="text" placeholder="水印文本（例如：© 我的水印）"></div>
+        <div class="row">
+          <div>中文字体目录：C:\Windows\Fonts</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <label><input class="chk" type="checkbox" checked>自动选择中文字体</label>
+            <select class="input"><option>msyh.ttc</option><option>simhei.ttf</option><option>自定义字体</option></select>
+          </div>
+          <div class="row"><input class="input" type="text" placeholder="自定义字体文件完整路径"></div>
+        </div>
+        <div class="row"><button class="btn" type="button" onclick="alert('这是预览页面，生成需在真实服务中进行')">生成</button></div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const drop=document.getElementById('drop');
+    const file=document.getElementById('file');
+    const url=document.getElementById('url');
+    const preview=document.getElementById('preview');
+    function showPreviewFromFile(f){const o=URL.createObjectURL(f);preview.src=o;preview.style.display='block';}
+    function showPreviewFromUrl(u){preview.src=u;preview.style.display='block';}
+    drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag');});
+    drop.addEventListener('dragleave',e=>{e.preventDefault();drop.classList.remove('drag');});
+    drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag');
+      if(e.dataTransfer.files&&e.dataTransfer.files.length){file.files=e.dataTransfer.files;showPreviewFromFile(file.files[0]);}
+      else{const t=e.dataTransfer.getData('text');if(t){url.value=t;showPreviewFromUrl(t);}}});
+    document.addEventListener('paste',e=>{if(e.clipboardData.files&&e.clipboardData.files.length){file.files=e.clipboardData.files;showPreviewFromFile(file.files[0]);}});
+    file.addEventListener('change',()=>{if(file.files&&file.files[0])showPreviewFromFile(file.files[0]);});
+    url.addEventListener('change',()=>{if(url.value)showPreviewFromUrl(url.value);});
+  </script>
+</body>
+</html>
