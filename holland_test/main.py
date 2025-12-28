@@ -1,7 +1,14 @@
 """霍兰德职业兴趣测试主程序 - 专业版"""
 
+import sys
+import io
 from datetime import datetime
 from typing import Dict, Optional
+
+# 设置UTF-8编码输出（解决Windows控制台编码问题）
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 from .questions import get_all_questions
 from .report_generator import generate_professional_report, generate_summary_report

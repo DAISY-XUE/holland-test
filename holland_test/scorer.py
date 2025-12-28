@@ -19,7 +19,7 @@ class TestResult:
 
 def calculate_scores(answers: Dict[int, bool]) -> Dict[str, int]:
     """
-    计算各类型得分
+    计算各类型得分（性能优化版本）
     
     Args:
         answers: 题目ID到答案的映射，True表示"是"，False表示"否"
@@ -29,13 +29,16 @@ def calculate_scores(answers: Dict[int, bool]) -> Dict[str, int]:
     """
     from .questions import QUESTIONS
     
+    # 性能优化：使用字典推导式和集合操作
     scores = {type_code: 0 for type_code in HOLLAND_TYPES.keys()}
     type_counts = {type_code: 0 for type_code in HOLLAND_TYPES.keys()}
     
-    # 计算每个类型的总题目数和得分
+    # 性能优化：单次遍历，减少字典查找
+    answers_set = {qid for qid, ans in answers.items() if ans}
+    
     for question in QUESTIONS:
         type_counts[question.type] += 1
-        if answers.get(question.id, False):
+        if question.id in answers_set:
             scores[question.type] += 1
     
     return scores
@@ -62,7 +65,7 @@ def calculate_percentages(scores: Dict[str, int], type_counts: Dict[str, int]) -
 
 def determine_types(scores: Dict[str, int]) -> Tuple[str, str, str]:
     """
-    确定主要、次要和第三类型
+    确定主要、次要和第三类型（性能优化版本）
     
     Args:
         scores: 各类型得分
@@ -70,8 +73,10 @@ def determine_types(scores: Dict[str, int]) -> Tuple[str, str, str]:
     Returns:
         (主要类型, 次要类型, 第三类型)
     """
+    # 性能优化：使用heapq获取前3个最大值（如果类型很多时更高效）
+    # 对于6个类型，直接排序已经足够快
     sorted_types = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    primary = sorted_types[0][0]
+    primary = sorted_types[0][0] if sorted_types else 'R'
     secondary = sorted_types[1][0] if len(sorted_types) > 1 else primary
     tertiary = sorted_types[2][0] if len(sorted_types) > 2 else secondary
     

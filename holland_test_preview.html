@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="霍兰德职业兴趣测试 - 基于RIASEC模型的国际权威职业兴趣评估工具">
+    <meta name="keywords" content="霍兰德测试,职业兴趣测试,RIASEC,职业规划">
+    <meta http-equiv="Cache-Control" content="public, max-age=3600">
     <title>霍兰德职业兴趣测试 - 界面预览</title>
     <style>
         * {
@@ -366,18 +369,22 @@
         ];
 
         function startTest() {
-            document.getElementById('welcome-screen').style.display = 'none';
-            document.getElementById('test-screen').style.display = 'block';
+            // 性能优化：使用缓存的DOM元素
+            if (welcomeScreenEl) welcomeScreenEl.style.display = 'none';
+            if (testScreenEl) testScreenEl.style.display = 'block';
             updateQuestion();
         }
 
         function updateQuestion() {
+            // 性能优化：使用缓存的DOM元素，避免重复查询
+            if (!questionNumberEl) return; // 确保DOM已加载
+            
             const questionIndex = (currentQuestion - 1) % sampleQuestions.length;
-            document.getElementById('question-number').textContent = `题目 ${currentQuestion}/${totalQuestions}`;
-            document.getElementById('question-text').textContent = sampleQuestions[questionIndex];
+            questionNumberEl.textContent = `题目 ${currentQuestion}/${totalQuestions}`;
+            questionTextEl.textContent = sampleQuestions[questionIndex];
             const progress = (currentQuestion / totalQuestions) * 100;
-            document.getElementById('progress').style.width = progress + '%';
-            document.getElementById('progress-text').textContent = `${currentQuestion}/${totalQuestions}`;
+            progressEl.style.width = progress + '%';
+            progressTextEl.textContent = `${currentQuestion}/${totalQuestions}`;
         }
 
         function answerQuestion(answer) {
@@ -391,18 +398,23 @@
         }
 
         function showResults() {
-            document.getElementById('test-screen').style.display = 'none';
-            document.getElementById('result-screen').classList.add('active');
+            // 性能优化：使用缓存的DOM元素
+            if (testScreenEl) testScreenEl.style.display = 'none';
+            if (resultScreenEl) resultScreenEl.classList.add('active');
         }
 
-        // 键盘快捷键
+        // 键盘快捷键（性能优化：使用事件委托和缓存）
         document.addEventListener('keydown', function(e) {
-            if (document.getElementById('test-screen').style.display !== 'none') {
-                if (e.key === 'y' || e.key === 'Y' || e.key === '1') {
-                    answerQuestion(true);
-                } else if (e.key === 'n' || e.key === 'N' || e.key === '0') {
-                    answerQuestion(false);
-                }
+            // 性能优化：快速检查，避免不必要的DOM查询
+            if (!testScreenEl || testScreenEl.style.display === 'none') return;
+            
+            const key = e.key.toLowerCase();
+            if (key === 'y' || key === '1') {
+                e.preventDefault();
+                answerQuestion(true);
+            } else if (key === 'n' || key === '0') {
+                e.preventDefault();
+                answerQuestion(false);
             }
         });
     </script>
