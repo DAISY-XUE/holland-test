@@ -1,0 +1,6 @@
+pdfplumber>=0.11.0
+watchdog>=4.0.0
+prefect>=2.14.0
+
+
+
