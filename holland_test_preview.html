@@ -220,10 +220,269 @@
             margin-top: 20px;
             color: #856404;
         }
+
+        /* 封面设计样式 */
+        .cover-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .cover-screen::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-50px, -50px); }
+        }
+
+        .cover-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+            padding: 40px;
+            max-width: 800px;
+        }
+
+        .cover-logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: white;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: logoFloat 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .cover-logo::before {
+            content: 'RIASEC';
+            font-size: 24px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .cover-title {
+            font-size: 48px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .cover-subtitle {
+            font-size: 24px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            font-weight: 300;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .cover-description {
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .cover-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .cover-feature {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s, background 0.3s;
+        }
+
+        .cover-feature:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .cover-feature-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .cover-feature-text {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .cover-button {
+            background: white;
+            color: #667eea;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+            animation: fadeInUp 1s ease-out 0.8s both;
+            margin-top: 20px;
+        }
+
+        .cover-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            background: #f8f9fa;
+        }
+
+        .cover-button:active {
+            transform: translateY(-1px);
+        }
+
+        .cover-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            animation: fadeInUp 1s ease-out 1s both;
+        }
+
+        .cover-stat {
+            text-align: center;
+        }
+
+        .cover-stat-number {
+            font-size: 36px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .cover-stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .cover-title {
+                font-size: 36px;
+            }
+            .cover-subtitle {
+                font-size: 20px;
+            }
+            .cover-description {
+                font-size: 16px;
+            }
+            .cover-features {
+                grid-template-columns: 1fr;
+            }
+            .cover-stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- 封面界面 -->
+    <div id="cover-screen" class="cover-screen">
+        <div class="cover-content">
+            <div class="cover-logo"></div>
+            <h1 class="cover-title">霍兰德职业兴趣测试</h1>
+            <h2 class="cover-subtitle">Holland Career Interest Test</h2>
+            <p class="cover-description">
+                基于RIASEC模型的国际权威职业兴趣评估工具<br>
+                帮助您发现真实的职业兴趣，规划理想的职业道路
+            </p>
+            
+            <div class="cover-features">
+                <div class="cover-feature">
+                    <div class="cover-feature-icon">📊</div>
+                    <div class="cover-feature-text">120道专业题目</div>
+                </div>
+                <div class="cover-feature">
+                    <div class="cover-feature-icon">🎯</div>
+                    <div class="cover-feature-text">6种职业类型</div>
+                </div>
+                <div class="cover-feature">
+                    <div class="cover-feature-icon">📈</div>
+                    <div class="cover-feature-text">全面分析报告</div>
+                </div>
+                <div class="cover-feature">
+                    <div class="cover-feature-icon">⚡</div>
+                    <div class="cover-feature-text">15-20分钟完成</div>
+                </div>
+            </div>
+
+            <div class="cover-stats">
+                <div class="cover-stat">
+                    <span class="cover-stat-number">120</span>
+                    <span class="cover-stat-label">测试题目</span>
+                </div>
+                <div class="cover-stat">
+                    <span class="cover-stat-number">6</span>
+                    <span class="cover-stat-label">职业类型</span>
+                </div>
+                <div class="cover-stat">
+                    <span class="cover-stat-number">20</span>
+                    <span class="cover-stat-label">分钟完成</span>
+                </div>
+            </div>
+
+            <button class="cover-button" onclick="showWelcome()">
+                开始测试 →
+            </button>
+        </div>
+    </div>
+
+    <div class="container" style="display: none;">
         <!-- 欢迎界面 -->
         <div id="welcome-screen">
             <div class="header">
@@ -367,6 +626,29 @@
             "我喜欢领导或管理他人",
             "我喜欢整理文件和资料"
         ];
+        
+        // 缓存DOM元素引用（性能优化）
+        let questionNumberEl, questionTextEl, progressEl, progressTextEl;
+        let testScreenEl, welcomeScreenEl, resultScreenEl;
+        
+        // 初始化时缓存DOM元素
+        document.addEventListener('DOMContentLoaded', function() {
+            questionNumberEl = document.getElementById('question-number');
+            questionTextEl = document.getElementById('question-text');
+            progressEl = document.getElementById('progress');
+            progressTextEl = document.getElementById('progress-text');
+            testScreenEl = document.getElementById('test-screen');
+            welcomeScreenEl = document.getElementById('welcome-screen');
+            resultScreenEl = document.getElementById('result-screen');
+        });
+
+        function showWelcome() {
+            // 显示欢迎界面，隐藏封面
+            const coverScreen = document.getElementById('cover-screen');
+            const container = document.querySelector('.container');
+            if (coverScreen) coverScreen.style.display = 'none';
+            if (container) container.style.display = 'block';
+        }
 
         function startTest() {
             // 性能优化：使用缓存的DOM元素
