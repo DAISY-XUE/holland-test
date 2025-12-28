@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>霍兰德职业兴趣测试 - 界面预览</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header h2 {
+            font-size: 18px;
+            opacity: 0.9;
+            font-weight: normal;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .welcome-section {
+            margin-bottom: 30px;
+        }
+
+        .welcome-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .welcome-section p {
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .info-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .info-box li {
+            padding: 8px 0;
+            color: #555;
+        }
+
+        .info-box li:before {
+            content: "• ";
+            color: #667eea;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .question-section {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .question-text {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .answer-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-yes {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-yes:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-no {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-no:hover {
+            background: #dee2e6;
+            transform: translateY(-2px);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 15%;
+            transition: width 0.3s;
+        }
+
+        .result-section {
+            display: none;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .result-section.active {
+            display: block;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-title {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 25px;
+            margin: 5px;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 欢迎界面 -->
+        <div id="welcome-screen">
+            <div class="header">
+                <h1>欢迎参加霍兰德职业兴趣测试</h1>
+                <h2>Holland Career Interest Test</h2>
+            </div>
+            <div class="content">
+                <div class="welcome-section">
+                    <h3>【测试简介】</h3>
+                    <p>霍兰德职业兴趣测试（Holland Career Interest Test）是基于RIASEC模型的国际权威职业兴趣评估工具，被广泛应用于企业招聘、职业规划、教育咨询等领域。</p>
+                </div>
+
+                <div class="info-box">
+                    <h3>【测试说明】</h3>
+                    <ul>
+                        <li>测试共有120道题目，每个职业兴趣类型20题</li>
+                        <li>请根据您的真实想法和感受，回答"是"或"否"</li>
+                        <li>请诚实回答，这将帮助您获得更准确的结果</li>
+                        <li>建议在安静、不受干扰的环境下完成测试</li>
+                        <li>预计完成时间：15-20分钟</li>
+                    </ul>
+                </div>
+
+                <div class="info-box">
+                    <h3>【答题方式】</h3>
+                    <ul>
+                        <li>点击"是"按钮表示同意该描述</li>
+                        <li>点击"否"按钮表示不同意该描述</li>
+                        <li>可以随时查看进度</li>
+                    </ul>
+                </div>
+
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn btn-yes" onclick="startTest()" style="max-width: 300px;">
+                        开始测试
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试界面 -->
+        <div id="test-screen" style="display: none;">
+            <div class="header">
+                <h1>霍兰德职业兴趣测试</h1>
+                <div style="margin-top: 15px;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress"></div>
+                    </div>
+                    <div style="font-size: 14px; opacity: 0.9;">进度: <span id="progress-text">1/120</span></div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="question-section">
+                    <div class="question-header">
+                        <div class="question-number" id="question-number">题目 1/120</div>
+                    </div>
+                    <div class="question-text" id="question-text">
+                        我喜欢修理或装配机械设备
+                    </div>
+                    <div class="answer-buttons">
+                        <button class="btn btn-yes" onclick="answerQuestion(true)">是 (Y)</button>
+                        <button class="btn btn-no" onclick="answerQuestion(false)">否 (N)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 结果界面 -->
+        <div id="result-screen" class="result-section">
+            <div class="header">
+                <h1>测试完成！</h1>
+            </div>
+            <div class="content">
+                <div class="result-card">
+                    <h2 class="result-title">您的职业兴趣类型</h2>
+                    <div>
+                        <span class="type-badge">现实型 (R)</span>
+                        <span class="type-badge">研究型 (I)</span>
+                        <span class="type-badge">艺术型 (A)</span>
+                    </div>
+                    <p style="margin-top: 20px; color: #666;">
+                        类型代码：RIA
+                    </p>
+                </div>
+
+                <div class="result-card">
+                    <h3 style="color: #667eea; margin-bottom: 15px;">各类型得分</h3>
+                    <div style="text-align: left; max-width: 500px; margin: 0 auto;">
+                        <div style="margin: 10px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>现实型 (R)</span>
+                                <span><strong>18/20 (90%)</strong></span>
+                            </div>
+                            <div class="progress-bar" style="height: 6px;">
+                                <div class="progress-fill" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>研究型 (I)</span>
+                                <span><strong>15/20 (75%)</strong></span>
+                            </div>
+                            <div class="progress-bar" style="height: 6px;">
+                                <div class="progress-fill" style="width: 75%;"></div>
+                            </div>
+                        </div>
+                        <div style="margin: 10px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>艺术型 (A)</span>
+                                <span><strong>12/20 (60%)</strong></span>
+                            </div>
+                            <div class="progress-bar" style="height: 6px;">
+                                <div class="progress-fill" style="width: 60%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="note">
+                    <strong>提示：</strong> 这是预览界面，实际测试需要运行 <code>python -m holland_test.main</code> 命令。
+                    完整测试包含120道题目，会生成详细的职业分析报告。
+                </div>
+
+                <div style="margin-top: 30px;">
+                    <button class="btn btn-yes" onclick="location.reload()" style="max-width: 200px;">
+                        重新开始
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 120;
+        const sampleQuestions = [
+            "我喜欢修理或装配机械设备",
+            "我喜欢阅读科学或技术类书籍",
+            "我喜欢创作艺术作品",
+            "我喜欢帮助他人解决问题",
+            "我喜欢领导或管理他人",
+            "我喜欢整理文件和资料"
+        ];
+
+        function startTest() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('test-screen').style.display = 'block';
+            updateQuestion();
+        }
+
+        function updateQuestion() {
+            const questionIndex = (currentQuestion - 1) % sampleQuestions.length;
+            document.getElementById('question-number').textContent = `题目 ${currentQuestion}/${totalQuestions}`;
+            document.getElementById('question-text').textContent = sampleQuestions[questionIndex];
+            const progress = (currentQuestion / totalQuestions) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = `${currentQuestion}/${totalQuestions}`;
+        }
+
+        function answerQuestion(answer) {
+            currentQuestion++;
+            
+            if (currentQuestion > 5) { // 预览模式：只答5题就显示结果
+                showResults();
+            } else {
+                updateQuestion();
+            }
+        }
+
+        function showResults() {
+            document.getElementById('test-screen').style.display = 'none';
+            document.getElementById('result-screen').classList.add('active');
+        }
+
+        // 键盘快捷键
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('test-screen').style.display !== 'none') {
+                if (e.key === 'y' || e.key === 'Y' || e.key === '1') {
+                    answerQuestion(true);
+                } else if (e.key === 'n' || e.key === 'N' || e.key === '0') {
+                    answerQuestion(false);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+
