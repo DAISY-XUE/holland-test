@@ -66,3 +66,5 @@ python -m pdf_auto_renamer.main
 3. **检查监控目录**：确保 `扫描文件夹` 目录存在
 
 
+
+
