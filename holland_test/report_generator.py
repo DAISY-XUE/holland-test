@@ -256,3 +256,4 @@ def generate_summary_report(result: TestResult) -> str:
     return "\n".join(report)
 
 
+
