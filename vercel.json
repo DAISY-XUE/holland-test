@@ -1,19 +1,12 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "holland_test_preview.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "/holland_test_preview.html"
+      "source": "/",
+      "destination": "/holland_test_preview.html"
     },
     {
-      "src": "/preview",
-      "dest": "/holland_test_preview.html"
+      "source": "/preview",
+      "destination": "/holland_test_preview.html"
     }
   ],
   "headers": [
