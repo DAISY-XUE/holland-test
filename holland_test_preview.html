@@ -563,8 +563,8 @@
                         <span class="type-badge">研究型 (I)</span>
                         <span class="type-badge">艺术型 (A)</span>
                     </div>
-                    <p style="margin-top: 20px; color: #666;">
-                        类型代码：RIA
+                    <p id="type-code" style="margin-top: 20px; color: #666;">
+                        类型代码：计算中...
                     </p>
                 </div>
 
@@ -616,16 +616,142 @@
     </div>
 
     <script>
-        let currentQuestion = 1;
-        const totalQuestions = 120;
-        const sampleQuestions = [
-            "我喜欢修理或装配机械设备",
-            "我喜欢阅读科学或技术类书籍",
-            "我喜欢创作艺术作品",
-            "我喜欢帮助他人解决问题",
-            "我喜欢领导或管理他人",
-            "我喜欢整理文件和资料"
+        // 所有120道题目
+        const allQuestions = [
+            {id: 1, text: "我喜欢修理或装配机械设备", type: "R"},
+            {id: 2, text: "我喜欢使用工具或机器进行实际操作", type: "R"},
+            {id: 3, text: "我喜欢户外活动和野外工作", type: "R"},
+            {id: 4, text: "我喜欢做手工制作和工艺工作", type: "R"},
+            {id: 5, text: "我喜欢建筑、施工或装修工作", type: "R"},
+            {id: 6, text: "我喜欢操作和驾驶机械设备", type: "R"},
+            {id: 7, text: "我喜欢园艺、农业或养殖活动", type: "R"},
+            {id: 8, text: "我喜欢维修和保养各种物品", type: "R"},
+            {id: 9, text: "我喜欢解决技术性和实用性问题", type: "R"},
+            {id: 10, text: "我喜欢与物品、机器而非人打交道", type: "R"},
+            {id: 11, text: "我喜欢阅读机械、技术类书籍杂志", type: "R"},
+            {id: 12, text: "我喜欢参加技术技能竞赛", type: "R"},
+            {id: 13, text: "我喜欢制作模型或手工艺品", type: "R"},
+            {id: 14, text: "我喜欢测量和绘制技术图纸", type: "R"},
+            {id: 15, text: "我喜欢组装和拆卸各类设备", type: "R"},
+            {id: 16, text: "我喜欢参与生产制造活动", type: "R"},
+            {id: 17, text: "我喜欢学习各种实用技能", type: "R"},
+            {id: 18, text: "我喜欢在工厂或车间工作", type: "R"},
+            {id: 19, text: "我喜欢从事需要动手能力的工作", type: "R"},
+            {id: 20, text: "我喜欢看到自己制作的产品成果", type: "R"},
+            {id: 21, text: "我喜欢阅读科学或技术类书籍", type: "I"},
+            {id: 22, text: "我喜欢做实验或进行科学研究", type: "I"},
+            {id: 23, text: "我喜欢分析数据和信息", type: "I"},
+            {id: 24, text: "我喜欢解决复杂的问题", type: "I"},
+            {id: 25, text: "我喜欢独立思考和研究", type: "I"},
+            {id: 26, text: "我喜欢探索新事物和未知领域", type: "I"},
+            {id: 27, text: "我喜欢数学或逻辑推理", type: "I"},
+            {id: 28, text: "我喜欢了解事物的工作原理和本质", type: "I"},
+            {id: 29, text: "我喜欢进行科学观察和记录", type: "I"},
+            {id: 30, text: "我喜欢在实验室或研究室工作", type: "I"},
+            {id: 31, text: "我喜欢阅读学术论文和研究报告", type: "I"},
+            {id: 32, text: "我喜欢参加学术讨论和研讨会", type: "I"},
+            {id: 33, text: "我喜欢使用科学方法解决问题", type: "I"},
+            {id: 34, text: "我喜欢收集和分析各种资料", type: "I"},
+            {id: 35, text: "我喜欢发现和验证科学规律", type: "I"},
+            {id: 36, text: "我喜欢挑战复杂的智力问题", type: "I"},
+            {id: 37, text: "我喜欢进行数据统计和分析", type: "I"},
+            {id: 38, text: "我喜欢提出新的理论或假设", type: "I"},
+            {id: 39, text: "我喜欢在安静的环境中深入研究", type: "I"},
+            {id: 40, text: "我喜欢通过研究获得新的知识", type: "I"},
+            {id: 41, text: "我喜欢创作艺术作品", type: "A"},
+            {id: 42, text: "我喜欢音乐、戏剧或舞蹈", type: "A"},
+            {id: 43, text: "我喜欢写作或表达创意想法", type: "A"},
+            {id: 44, text: "我喜欢设计或装饰工作", type: "A"},
+            {id: 45, text: "我喜欢摄影、绘画或雕塑", type: "A"},
+            {id: 46, text: "我喜欢欣赏各种艺术作品", type: "A"},
+            {id: 47, text: "我喜欢表达自己的想法和感受", type: "A"},
+            {id: 48, text: "我喜欢从事创造性工作", type: "A"},
+            {id: 49, text: "我喜欢独立工作，不受约束", type: "A"},
+            {id: 50, text: "我喜欢参与文化活动", type: "A"},
+            {id: 51, text: "我喜欢尝试新的艺术表现形式", type: "A"},
+            {id: 52, text: "我喜欢通过艺术表达情感", type: "A"},
+            {id: 53, text: "我喜欢阅读文学作品和诗歌", type: "A"},
+            {id: 54, text: "我喜欢参加艺术展览和演出", type: "A"},
+            {id: 55, text: "我喜欢学习各种艺术技巧", type: "A"},
+            {id: 56, text: "我喜欢自由的工作环境", type: "A"},
+            {id: 57, text: "我喜欢创作独特和原创的作品", type: "A"},
+            {id: 58, text: "我喜欢用艺术方式解决问题", type: "A"},
+            {id: 59, text: "我喜欢展示自己的艺术才能", type: "A"},
+            {id: 60, text: "我喜欢在不同领域寻找灵感", type: "A"},
+            {id: 61, text: "我喜欢帮助他人解决问题", type: "S"},
+            {id: 62, text: "我喜欢教学或培训他人", type: "S"},
+            {id: 63, text: "我喜欢照顾和关心他人", type: "S"},
+            {id: 64, text: "我喜欢团队合作和集体活动", type: "S"},
+            {id: 65, text: "我喜欢与人交流沟通", type: "S"},
+            {id: 66, text: "我喜欢组织社交和公益活动", type: "S"},
+            {id: 67, text: "我喜欢理解他人的感受和想法", type: "S"},
+            {id: 68, text: "我喜欢提供咨询或建议", type: "S"},
+            {id: 69, text: "我喜欢志愿服务工作", type: "S"},
+            {id: 70, text: "我喜欢促进他人的发展和成长", type: "S"},
+            {id: 71, text: "我喜欢参加社区服务活动", type: "S"},
+            {id: 72, text: "我喜欢处理人际关系问题", type: "S"},
+            {id: 73, text: "我喜欢在团队中发挥协调作用", type: "S"},
+            {id: 74, text: "我喜欢了解不同人的需求", type: "S"},
+            {id: 75, text: "我喜欢通过帮助他人获得满足感", type: "S"},
+            {id: 76, text: "我喜欢参与教育和培训活动", type: "S"},
+            {id: 77, text: "我喜欢在服务性行业工作", type: "S"},
+            {id: 78, text: "我喜欢与他人分享知识和经验", type: "S"},
+            {id: 79, text: "我喜欢创造和谐的人际关系", type: "S"},
+            {id: 80, text: "我喜欢看到他人因为我的帮助而进步", type: "S"},
+            {id: 81, text: "我喜欢领导或管理他人", type: "E"},
+            {id: 82, text: "我喜欢销售或说服他人", type: "E"},
+            {id: 83, text: "我喜欢制定商业计划和策略", type: "E"},
+            {id: 84, text: "我喜欢在竞争中获胜", type: "E"},
+            {id: 85, text: "我喜欢组织和管理活动", type: "E"},
+            {id: 86, text: "我喜欢承担商业风险", type: "E"},
+            {id: 87, text: "我喜欢创业或经营企业", type: "E"},
+            {id: 88, text: "我喜欢影响或说服他人", type: "E"},
+            {id: 89, text: "我喜欢承担领导责任", type: "E"},
+            {id: 90, text: "我喜欢追求经济利益和成功", type: "E"},
+            {id: 91, text: "我喜欢参与商业谈判", type: "E"},
+            {id: 92, text: "我喜欢阅读商业和管理类书籍", type: "E"},
+            {id: 93, text: "我喜欢制定目标并努力实现", type: "E"},
+            {id: 94, text: "我喜欢在快节奏的环境中工作", type: "E"},
+            {id: 95, text: "我喜欢建立和维护商业关系", type: "E"},
+            {id: 96, text: "我喜欢管理项目和团队", type: "E"},
+            {id: 97, text: "我喜欢参与投资和金融活动", type: "E"},
+            {id: 98, text: "我喜欢通过努力获得更高的地位", type: "E"},
+            {id: 99, text: "我喜欢处理复杂的商业问题", type: "E"},
+            {id: 100, text: "我喜欢在商业领域取得成功", type: "E"},
+            {id: 101, text: "我喜欢整理文件和资料", type: "C"},
+            {id: 102, text: "我喜欢处理数据和记录", type: "C"},
+            {id: 103, text: "我喜欢遵循规则和程序", type: "C"},
+            {id: 104, text: "我喜欢有规律的工作", type: "C"},
+            {id: 105, text: "我喜欢使用办公软件", type: "C"},
+            {id: 106, text: "我喜欢保持整洁有序", type: "C"},
+            {id: 107, text: "我喜欢做预算或财务工作", type: "C"},
+            {id: 108, text: "我喜欢处理日常事务", type: "C"},
+            {id: 109, text: "我喜欢稳定的工作环境", type: "C"},
+            {id: 110, text: "我喜欢执行标准化的流程", type: "C"},
+            {id: 111, text: "我喜欢进行数据录入和整理", type: "C"},
+            {id: 112, text: "我喜欢使用统计软件分析数据", type: "C"},
+            {id: 113, text: "我喜欢维护档案和记录系统", type: "C"},
+            {id: 114, text: "我喜欢在有序的环境中工作", type: "C"},
+            {id: 115, text: "我喜欢处理财务和会计事务", type: "C"},
+            {id: 116, text: "我喜欢阅读规章制度和操作手册", type: "C"},
+            {id: 117, text: "我喜欢确保工作的准确性和一致性", type: "C"},
+            {id: 118, text: "我喜欢参与行政管理工作", type: "C"},
+            {id: 119, text: "我喜欢通过学习提高工作效率", type: "C"},
+            {id: 120, text: "我喜欢通过规范工作获得成就感", type: "C"}
         ];
+        
+        const questionTypes = {
+            "R": "现实型 (Realistic)",
+            "I": "研究型 (Investigative)",
+            "A": "艺术型 (Artistic)",
+            "S": "社会型 (Social)",
+            "E": "企业型 (Enterprising)",
+            "C": "常规型 (Conventional)"
+        };
+        
+        let currentQuestion = 0;
+        const totalQuestions = allQuestions.length;
+        let answers = {}; // 存储答案：{questionId: true/false}
         
         // 缓存DOM元素引用（性能优化）
         let questionNumberEl, questionTextEl, progressEl, progressTextEl;
@@ -661,28 +787,132 @@
             // 性能优化：使用缓存的DOM元素，避免重复查询
             if (!questionNumberEl) return; // 确保DOM已加载
             
-            const questionIndex = (currentQuestion - 1) % sampleQuestions.length;
-            questionNumberEl.textContent = `题目 ${currentQuestion}/${totalQuestions}`;
-            questionTextEl.textContent = sampleQuestions[questionIndex];
-            const progress = (currentQuestion / totalQuestions) * 100;
+            if (currentQuestion >= totalQuestions) {
+                showResults();
+                return;
+            }
+            
+            const question = allQuestions[currentQuestion];
+            questionNumberEl.textContent = `题目 ${currentQuestion + 1}/${totalQuestions}`;
+            questionTextEl.textContent = question.text;
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
             progressEl.style.width = progress + '%';
-            progressTextEl.textContent = `${currentQuestion}/${totalQuestions}`;
+            progressTextEl.textContent = `${currentQuestion + 1}/${totalQuestions}`;
         }
 
         function answerQuestion(answer) {
+            // 保存当前题目的答案
+            if (currentQuestion < totalQuestions) {
+                const question = allQuestions[currentQuestion];
+                answers[question.id] = answer;
+            }
+            
             currentQuestion++;
             
-            if (currentQuestion > 5) { // 预览模式：只答5题就显示结果
+            if (currentQuestion >= totalQuestions) {
                 showResults();
             } else {
                 updateQuestion();
             }
         }
 
+        function calculateScores() {
+            // 计算各类型得分
+            const scores = {R: 0, I: 0, A: 0, S: 0, E: 0, C: 0};
+            
+            allQuestions.forEach(q => {
+                if (answers[q.id] === true) {
+                    scores[q.type]++;
+                }
+            });
+            
+            // 计算百分比
+            const percentages = {};
+            Object.keys(scores).forEach(type => {
+                percentages[type] = (scores[type] / 20) * 100;
+            });
+            
+            // 确定主要、次要、第三类型
+            const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+            const primary = sorted[0][0];
+            const secondary = sorted[1][0];
+            const tertiary = sorted[2][0];
+            const typeCode = primary + secondary + tertiary;
+            
+            return {scores, percentages, primary, secondary, tertiary, typeCode};
+        }
+        
         function showResults() {
             // 性能优化：使用缓存的DOM元素
             if (testScreenEl) testScreenEl.style.display = 'none';
             if (resultScreenEl) resultScreenEl.classList.add('active');
+            
+            // 计算结果
+            const result = calculateScores();
+            
+            // 更新结果显示
+            updateResultDisplay(result);
+        }
+        
+        function updateResultDisplay(result) {
+            // 更新类型代码
+            const typeCodeEl = document.getElementById('type-code');
+            if (typeCodeEl) {
+                typeCodeEl.textContent = `类型代码：${result.typeCode}`;
+            }
+            
+            // 更新类型徽章（第一个result-card）
+            const firstCard = document.querySelectorAll('.result-card')[0];
+            if (firstCard) {
+                const badgesContainer = firstCard.querySelector('div');
+                if (badgesContainer && badgesContainer.querySelector('.type-badge')) {
+                    badgesContainer.innerHTML = `
+                        <span class="type-badge">${questionTypes[result.primary]} (${result.primary})</span>
+                        <span class="type-badge">${questionTypes[result.secondary]} (${result.secondary})</span>
+                        <span class="type-badge">${questionTypes[result.tertiary]} (${result.tertiary})</span>
+                    `;
+                }
+            }
+            
+            // 更新得分显示（第二个result-card）
+            const secondCard = document.querySelectorAll('.result-card')[1];
+            if (secondCard) {
+                const types = ['R', 'I', 'A', 'S', 'E', 'C'];
+                const sortedTypes = types.sort((a, b) => result.scores[b] - result.scores[a]);
+                
+                let scoresHTML = '';
+                sortedTypes.forEach(type => {
+                    const score = result.scores[type];
+                    const percentage = result.percentages[type];
+                    scoresHTML += `
+                        <div style="margin: 10px 0;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <span>${questionTypes[type]}</span>
+                                <span><strong>${score}/20 (${percentage.toFixed(1)}%)</strong></span>
+                            </div>
+                            <div class="progress-bar" style="height: 6px;">
+                                <div class="progress-fill" style="width: ${percentage}%;"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                secondCard.innerHTML = `
+                    <h3 style="color: #667eea; margin-bottom: 15px;">各类型得分</h3>
+                    <div style="text-align: left; max-width: 500px; margin: 0 auto;">
+                        ${scoresHTML}
+                    </div>
+                `;
+            }
+            
+            // 更新提示信息
+            const noteEl = document.querySelector('.note');
+            if (noteEl) {
+                noteEl.innerHTML = `
+                    <strong>测试完成！</strong> 您已完成全部120道题目。测试结果基于霍兰德职业兴趣理论（RIASEC模型）计算。
+                    建议结合个人实际情况和专业咨询进行职业规划。
+                `;
+            }
         }
 
         // 键盘快捷键（性能优化：使用事件委托和缓存）
