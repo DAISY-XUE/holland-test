@@ -33,3 +33,4 @@ if __name__ == "__main__":
     print('            "C": "常规型 (Conventional)"')
     print("        };")
 
+
